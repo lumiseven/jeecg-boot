@@ -14,8 +14,18 @@ module.exports = {
    */
   // 如果你不需要生产环境的 source map，可以将其设置为 false 以加速生产环境构建。
   productionSourceMap: false,
+  //qiankuan打包时放开
+  //outputDir: "../dist/main",
+  // 多入口配置
+  // pages: {
+  //   index: {
+  //     entry: 'src/main.js',
+  //     template: 'public/index.html',
+  //     filename: 'index.html',
+  //   }
+  // },
   //打包app时放开该配置
-  //publicPath:'./',
+  //publicPath:'/',
   configureWebpack: config => {
     //生产环境取消 console.log
     if (process.env.NODE_ENV === 'production') {
@@ -77,6 +87,15 @@ module.exports = {
 
   devServer: {
     port: 3000,
+    // hot: true,
+    // disableHostCheck: true,
+    // overlay: {
+    //     warnings: false,
+    //     errors: true,
+    // },
+    // headers: {
+    //     'Access-Control-Allow-Origin': '*',
+    // },
     proxy: {
      /* '/api': {
         target: 'https://mock.ihx.me/mock/5baf3052f7da7e07e04a5116/antd-pro', //mock API接口系统

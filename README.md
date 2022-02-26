@@ -7,13 +7,13 @@
 JEECG BOOT 低代码开发平台（前后端分离版本）
 ===============
 
-当前最新版本： 2.4.6（发布日期：2021-08-16）
+当前最新版本： 3.1.0（发布日期：2022-03-01）
 
 
 [![AUR](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE)
 [![](https://img.shields.io/badge/Author-北京国炬软件-orange.svg)](http://www.jeecg.com)
 [![](https://img.shields.io/badge/Blog-官方博客-blue.svg)](https://jeecg.blog.csdn.net)
-[![](https://img.shields.io/badge/version-2.4.6-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
+[![](https://img.shields.io/badge/version-3.1.0-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
 [![GitHub stars](https://img.shields.io/github/stars/zhangdaiscott/jeecg-boot.svg?style=social&label=Stars)](https://github.com/zhangdaiscott/jeecg-boot)
 [![GitHub forks](https://img.shields.io/github/forks/zhangdaiscott/jeecg-boot.svg?style=social&label=Fork)](https://github.com/zhangdaiscott/jeecg-boot)
 
@@ -57,18 +57,20 @@ Jeecg-Boot低代码开发平台，可以应用在任何J2EE项目的开发中，
 
 - 更新日志：  [版本日志](http://www.jeecg.com/doc/log)
 
+- VUE3版演示(未正式发布)：[http://boot3.jeecg.com](http://boot3.jeecg.com)
+
 
 
 交流互动
 -----------------------------------
 
-- QQ交流群 ：  ④774126647、③816531124（满）、②769925425（满）、①284271917（满）
+- QQ交流群 ： ⑤860162132、④774126647(满)、③816531124(满)、②769925425(满)、①284271917(满)
 
 - 反馈问题：  [反馈问题，请按格式发Issues](https://github.com/zhangdaiscott/jeecg-boot/issues/new)
 
 - 参与开源：  [欢迎加入JEECG开源团队，共同进步！！](http://www.jeecg.com/doc/join)
 
-- Online一分钟：  [1分钟快速学习](https://jeecg.blog.csdn.net/article/details/106078912)
+- Online一分钟：  [1分钟快速学习](https://my.oschina.net/jeecg/blog/3083313)
 
 
 为什么选择JEECG-BOOT?
@@ -130,9 +132,23 @@ Jeecg-Boot低代码开发平台，可以应用在任何J2EE项目的开发中，
 
 - 依赖管理：Maven
 
-- 数据库：MySQL5.7+  &  Oracle 11g & Sqlserver2017
-
 - 缓存：Redis
+
+- 数据库脚本：MySQL5.7+  &  Oracle 11g & Sqlserver2017（默认只提供这三个库脚本，其他库需要自己转）
+
+|  数据库   |  支持   |
+| --- | --- |
+|   MySQL   |  √   |
+|  Oracle11g   |  √   |
+|  Sqlserver2017   |  √   |
+|   PostgreSQL   |  √   |
+|   DB2、Informix   |  √   |
+|   MariaDB   |  √   |
+|  SQLite、Hsqldb、Derby、H2   |  √   |
+|   达梦、人大金仓、神通   |  √   |
+|   华为高斯、虚谷、瀚高数据库   |  √   |
+|   阿里云PolarDB、PPAS、HerdDB   |  √   |
+|  Hive、HBase、CouchBase   |  √   |
 
 
 #### 后端
