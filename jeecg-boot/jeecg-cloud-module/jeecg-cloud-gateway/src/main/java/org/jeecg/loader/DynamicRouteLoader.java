@@ -1,5 +1,6 @@
 package org.jeecg.loader;
 
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -10,17 +11,21 @@ import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jeecg.common.base.BaseMap;
 import org.jeecg.common.constant.CacheConstant;
 import org.jeecg.common.util.RedisUtil;
 import org.jeecg.config.GatewayRoutersConfiguration;
 import org.jeecg.config.RouterDataType;
+import org.jeecg.loader.repository.DynamicRouteService;
+import org.jeecg.loader.repository.MyInMemoryRouteDefinitionRepository;
+import org.jeecg.loader.vo.MyRouteDefinition;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.cloud.gateway.filter.FilterDefinition;
 import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
-import org.springframework.cloud.gateway.route.InMemoryRouteDefinitionRepository;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -33,6 +38,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
@@ -45,33 +51,40 @@ import java.util.concurrent.Executor;
 @Slf4j
 @Component
 @DependsOn({"gatewayRoutersConfiguration"})
+@RefreshScope
 public class DynamicRouteLoader implements ApplicationEventPublisherAware {
 
 
+    private MyInMemoryRouteDefinitionRepository repository;
     private ApplicationEventPublisher publisher;
-
-    private InMemoryRouteDefinitionRepository repository;
-
     private DynamicRouteService dynamicRouteService;
-
     private ConfigService configService;
-
     private RedisUtil redisUtil;
 
+    /**
+     * 路由配置方式：database(数据库)，yml(配置文件)，nacos
+     */
+    @Value("${jeecg.route.config.data-type:database}")
+    public  String dataType;
+    /**
+     * 需要拼接key的路由条件
+     */
+    private static String[] GEN_KEY_ROUTERS = new String[]{"Path", "Host", "Method", "After", "Before", "Between", "RemoteAddr"};
 
-    public DynamicRouteLoader(InMemoryRouteDefinitionRepository repository, DynamicRouteService dynamicRouteService, RedisUtil redisUtil) {
+    public DynamicRouteLoader(MyInMemoryRouteDefinitionRepository repository, DynamicRouteService dynamicRouteService, RedisUtil redisUtil) {
 
         this.repository = repository;
         this.dynamicRouteService = dynamicRouteService;
         this.redisUtil = redisUtil;
     }
 
-    @PostConstruct
-    public void init() {
-       init(null);
-    }
+//    @PostConstruct
+//    public void init() {
+//       init(null);
+//    }
+
+
     public void init(BaseMap baseMap) {
-        String dataType = GatewayRoutersConfiguration.DATA_TYPE;
         log.info("初始化路由，dataType："+ dataType);
         if (RouterDataType.nacos.toString().endsWith(dataType)) {
             loadRoutesByNacos();
@@ -87,7 +100,6 @@ public class DynamicRouteLoader implements ApplicationEventPublisherAware {
      * @return
      */
     public Mono<Void> refresh(BaseMap baseMap) {
-        String dataType = GatewayRoutersConfiguration.DATA_TYPE;
         if (!RouterDataType.yml.toString().endsWith(dataType)) {
             this.init(baseMap);
         }
@@ -138,7 +150,7 @@ public class DynamicRouteLoader implements ApplicationEventPublisherAware {
         }
         Object configInfo = redisUtil.get(CacheConstant.GATEWAY_ROUTES);
         if (ObjectUtil.isNotEmpty(configInfo)) {
-            log.info("获取网关当前配置:\r\n{}", configInfo);
+            log.debug("获取网关当前配置:\r\n{}", configInfo);
             JSONArray array = JSON.parseArray(configInfo.toString());
             try {
                 routes = getRoutesByJson(array);
@@ -147,7 +159,7 @@ public class DynamicRouteLoader implements ApplicationEventPublisherAware {
             }
         }
         for (MyRouteDefinition definition : routes) {
-            log.info("update route : {}", definition.toString());
+            log.debug("update route : {}", definition.toString());
             Integer status=definition.getStatus();
             if(status.equals(0)){
                 dynamicRouteService.delete(definition.getId());
@@ -156,9 +168,9 @@ public class DynamicRouteLoader implements ApplicationEventPublisherAware {
             }
         }
         if(ObjectUtils.isNotEmpty(baseMap)){
-            String routerId=baseMap.get("routerId");
-            if(ObjectUtils.isNotEmpty(routerId)) {
-                dynamicRouteService.delete(routerId);
+            String delRouterId = baseMap.get("delRouterId");
+            if (ObjectUtils.isNotEmpty(delRouterId)) {
+                dynamicRouteService.delete(delRouterId);
             }
         }
         this.publisher.publishEvent(new RefreshRoutesEvent(this));
@@ -195,11 +207,27 @@ public class DynamicRouteLoader implements ApplicationEventPublisherAware {
                 for (Object map : list) {
                     JSONObject json = (JSONObject) map;
                     PredicateDefinition predicateDefinition = new PredicateDefinition();
-                    predicateDefinition.setName(json.getString("name"));
-                    JSONArray jsonArray = json.getJSONArray("args");
-                    for (int j = 0; j < jsonArray.size(); j++) {
-                        predicateDefinition.addArg("_genkey" + j, jsonArray.get(j).toString());
+                    //update-begin-author:zyf date:20220419 for:【VUEN-762】路由条件添加异常问题,原因是部分路由条件参数需要设置固定key
+                    String name=json.getString("name");
+                    predicateDefinition.setName(name);
+                    //路由条件是否拼接Key
+                    if(ArrayUtil.contains(GEN_KEY_ROUTERS,name)) {
+                        JSONArray jsonArray = json.getJSONArray("args");
+                        for (int j = 0; j < jsonArray.size(); j++) {
+                            predicateDefinition.addArg("_genkey" + j, jsonArray.get(j).toString());
+                        }
+                    }else{
+                        JSONObject jsonObject = json.getJSONObject("args");
+                        if(ObjectUtil.isNotEmpty(jsonObject)){
+                            for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
+                                Object valueObj=entry.getValue();
+                                if(ObjectUtil.isNotEmpty(valueObj)) {
+                                    predicateDefinition.addArg(entry.getKey(), valueObj.toString());
+                                }
+                            }
+                        }
                     }
+                    //update-end-author:zyf date:20220419 for:【VUEN-762】路由条件添加异常问题,原因是部分路由条件参数需要设置固定key
                     predicateDefinitionList.add(predicateDefinition);
                 }
                 route.setPredicates(predicateDefinitionList);

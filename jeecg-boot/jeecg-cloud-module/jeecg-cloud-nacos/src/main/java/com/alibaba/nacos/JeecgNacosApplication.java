@@ -1,6 +1,5 @@
 package com.alibaba.nacos;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
@@ -8,8 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * Nacos 启动类
- * 引用的nacos console 源码运行，简化开发
- * 生产建议从官网下载最新版配置运行
+ *
  * @author zyf
  */
 @SpringBootApplication(scanBasePackages = "com.alibaba.nacos")
@@ -35,4 +33,5 @@ public class JeecgNacosApplication {
         System.setProperty("server.port","8848");
         SpringApplication.run(JeecgNacosApplication.class, args);
     }
+
 }

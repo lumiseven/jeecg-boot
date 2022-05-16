@@ -42,7 +42,10 @@ export const searchFormSchema: FormSchema[] = [
 </#if>
 </#list>
 ];
+
 export const formSchema: FormSchema[] = [
+  // TODO 主键隐藏字段，目前写死为ID
+  {label: '', field: 'id', component: 'Input', show: false},
 <#list columns as po><#rt/>
   {
     label: '${po.filedComment}',
@@ -50,14 +53,18 @@ export const formSchema: FormSchema[] = [
      <#if po.fieldType =='date'>
     component: 'DatePicker'
      <#elseif po.fieldType =='datetime'>
-    component: 'TimePicker'
+    component: 'DatePicker',
+    componentProps: {
+      showTime: true,
+      valueFormat: 'YYYY-MM-DD hh:mm:ss',
+    },
      <#elseif "int,decimal,double,"?contains(po.fieldType)>
-    component: 'InputNumber'
+    component: 'InputNumber',
      <#else>
-    component: 'Input'
+    component: 'Input',
     </#if>
     <#if po.fieldName =='id'><#rt/>
-    show:false
+    show:false,
     </#if>
   },
 </#list>
