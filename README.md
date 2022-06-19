@@ -34,6 +34,14 @@ JeecgBoot 提供了一系列`低代码模块`，实现在线开发`真正的零�
 `JEECG业务流程:` 采用工作流来实现、扩展出任务接口，供开发编写业务逻辑，表单提供多种解决方案： 表单设计器、online配置表单、编码表单。同时实现了流程与表单的分离设计（松耦合）、并支持任务节点灵活配置，既保证了公司流程的保密性，又减少了开发人员的工作量。
 
 
+
+| 项目名                | 说明                     | 传送门                                                                                                                                 |
+|--------------------|------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| `jeecg-boot`    | JAVA后台（支持微服务）        | [Github](https://github.com/jeecgboot/jeecg-boot) &nbsp;&nbsp;    [Gitee](https://gitee.com/jeecg/jeecg-boot)  |
+| `ant-design-vue-jeecg`  |Vue2版前端代码（默认与主项目一起）       |        |
+| `jeecgboot-vue3` | Vue3版前端代码 | [Github](https://github.com/jeecgboot/jeecgboot-vue3)   &nbsp;&nbsp;  [Gitee](https://gitee.com/jeecg/jeecgboot-vue3) |
+
+
 适用项目
 -----------------------------------
 Jeecg-Boot低代码开发平台，可以应用在任何J2EE项目的开发中，尤其适合SAAS项目、企业信息管理系统（MIS）、内部办公系统（OA）、企业资源计划系统（ERP）、客户关系管理系统（CRM）等，其半智能手工Merge的开发方式，可以显著提高开发效率70%以上，极大降低开发成本。
@@ -45,25 +53,17 @@ Jeecg-Boot低代码开发平台，可以应用在任何J2EE项目的开发中，
 
 - 技术官网：  [http://www.jeecg.com](http://www.jeecg.com)
 
-- 在线演示 ： [http://boot.jeecg.com](http://boot.jeecg.com)
+- 在线演示 ： [Vue2版本](http://boot.jeecg.com) |  [Vue3版本](http://boot3.jeecg.com)
 
-- 开发文档：  [http://doc.jeecg.com](http://doc.jeecg.com)
+- 开发文档：  [主项目文档](http://doc.jeecg.com) | [Vue3文档](http://vue3.jeecg.com)
 
-- 入门视频： [https://space.bilibili.com/454617261/channel/series](https://space.bilibili.com/454617261/channel/series)
-
-- 新手指南： [快速入门](http://www.jeecg.com/doc/quickstart)  |   [常见问题 ](http://www.jeecg.com/doc/qa)  |   [技术支持](http://jeecg.com/doc/help) |  [1分钟体验低代码](https://my.oschina.net/jeecg/blog/3083313)
+- 新手指南： [快速入门](http://www.jeecg.com/doc/quickstart)  |  [视频教程](https://space.bilibili.com/454617261/channel/series) |   [常见问题 ](http://www.jeecg.com/doc/qa)  |   [技术支持](http://jeecg.com/doc/help) |  [1分钟体验低代码](https://my.oschina.net/jeecg/blog/3083313)
 
 - 微服务开发：  [单体切换为微服务](http://doc.jeecg.com/2704725)
 
-- QQ交流群 ： ⑤860162132、683903138(VUE3版)、~~④774126647(满)、③816531124(满)、②769925425(满)、①284271917(满)~~
+- QQ交流群 ： ⑥730954414、VUE3群683903138、⑤860162132(满)、④774126647(满)、③816531124(满)、②769925425(满)、①284271917(满)
 
-Vue3版前端（Beta版）
------------------------------------
 
-> 采用Vue3.0、Vite、 Ant-Design-Vue、TypeScript 等新技术方案，包括二次封装组件、utils、hooks、动态菜单、权限校验、按钮级别权限控制等功能！ 是在 Vben-Admin 基础上研发的，适合于JeecgBoot的新版前端VUE3框架。
-
-- 源码下载：https://github.com/jeecgboot/jeecgboot-vue3
-- 入门指南： [开发文档](http://vue3.jeecg.com/2398845)  |   [ VUE3版演示 ](http://boot3.jeecg.com)  |   [入门视频](https://www.bilibili.com/video/BV1V34y187Y9) 
 
 
 为什么选择JEECG-BOOT?
@@ -153,6 +153,8 @@ Vue3版前端（Beta版）
 
 #### 前端
  
+ > 此处是Vue2的技术栈介绍，[Vue3版技术栈看这里](https://github.com/jeecgboot/jeecgboot-vue3)
+
 - [Vue 2.6.10](https://cn.vuejs.org/),[Vuex](https://vuex.vuejs.org/zh/),[Vue Router](https://router.vuejs.org/zh/)
 - [Axios](https://github.com/axios/axios)
 - [ant-design-vue](https://vuecomponent.github.io/ant-design-vue/docs/vue/introduce-cn/)
@@ -218,7 +220,7 @@ Vue3版前端（Beta版）
 
    
 #### 微服务架构图
-![微服务架构图](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/jeecgboot-weifuwu-cloud.png "在这里输入图片标题")
+![微服务架构图](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/jeecgboot_springcloud2022.png "在这里输入图片标题")
 
 ### Jeecg Boot 产品功能蓝图
 ![功能蓝图](https://jeecgos.oss-cn-beijing.aliyuncs.com/upload/test/Jeecg-Boot-lantu202005_1590912449914.jpg "在这里输入图片标题")
@@ -338,18 +340,20 @@ Vue3版前端（Beta版）
 │  ├─Online在线表单 - 功能已开放
 │  ├─Online代码生成器 - 功能已开放
 │  ├─Online在线报表 - 功能已开放
-│  ├─Online在线图表(暂不开源)
-│  ├─Online图表模板配置(暂不开源)
-│  ├─Online布局设计(暂不开源)
+│  ├─Online在线图表(商业功能)
+│  ├─Online图表模板配置(商业功能)
+│  ├─Online布局设计(商业功能)
 │  ├─多数据源管理 - 功能已开放
 ├─积木报表设计器(低代码)
 │  ├─打印设计器
 │  ├─数据报表设计
 │  ├─图形报表设计（支持echart）
-│  ├─大屏设计器(暂不开源)
-│─流程模块功能 (暂不开源)
+│  ├─大屏设计器(商业功能)
+│─流程模块功能 (商业功能)
 │  ├─流程设计器
-│  ├─在线表单设计
+│  ├─表单设计器
+   ├─大屏设计器
+   ├─门户设计/仪表盘设计器
 │  └─我的任务
 │  └─历史流程
 │  └─历史流程
@@ -360,10 +364,10 @@ Vue3版前端（Beta版）
 │  └─我的抄送
 │  └─流程委派、抄送、跳转
 │  └─。。。
-│─OA办公组件 (暂不开源)
+│─OA办公组件 (商业功能)
 │  ├─更多功能
 │  └─。。。
-└─其他模块 (暂不开源)
+└─其他模块
    └─更多功能开发中。。
    
 ```
